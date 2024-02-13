@@ -266,7 +266,7 @@ class RegionalIPAdapterMask:
 
     CATEGORY = "InspirePack/Regional"
 
-    def doit(self, mask, image, weight, noise, weight_type, start_at=0.0, end_at=1.0, unfold_batch=False, faceid_v2=False, weight_v2=False):
+    def doit(self, mask, image, weight, noise, weight_type, start_at=0.0, end_at=1.0, unfold_batch=False, turn_on=True, faceid_v2=False, weight_v2=False):
         if turn_on is False:
             return (None, )
         cond = IPAdapterConditioning(mask, weight, weight_type, noise=noise, image=image, start_at=start_at, end_at=end_at, unfold_batch=unfold_batch, faceid_v2=faceid_v2, weight_v2=weight_v2)
