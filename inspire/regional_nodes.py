@@ -253,6 +253,7 @@ class RegionalIPAdapterMask:
                 "start_at": ("FLOAT", {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.001}),
                 "end_at": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.001}),
                 "unfold_batch": ("BOOLEAN", {"default": False}),
+                "turn_on": ("BOOLEAN", {"default": True}),
             },
             "optional": {
                 "faceid_v2": ("BOOLEAN", { "default": False }),
@@ -266,6 +267,8 @@ class RegionalIPAdapterMask:
     CATEGORY = "InspirePack/Regional"
 
     def doit(self, mask, image, weight, noise, weight_type, start_at=0.0, end_at=1.0, unfold_batch=False, faceid_v2=False, weight_v2=False):
+        if turn_on is False:
+            return (None, )
         cond = IPAdapterConditioning(mask, weight, weight_type, noise=noise, image=image, start_at=start_at, end_at=end_at, unfold_batch=unfold_batch, faceid_v2=faceid_v2, weight_v2=weight_v2)
         return (cond, )
 
@@ -378,6 +381,7 @@ class ApplyRegionalIPAdapters:
         del kwargs['ipadapter_pipe']
 
         for k, v in kwargs.items():
+            if v is None: continue
             ipadapter_pipe = ipadapter, model, clip_vision, insightface
             model = v.doit(ipadapter_pipe)
 
